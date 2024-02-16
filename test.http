@@ -1,0 +1,5 @@
+###
+GET http://127.0.0.1:8081/v1/sign?
+    param=clienttype%3D1%26qimei%3Dcc51cce4aafd4d0e0fd61031100014816b02%26tstamp%3D1707126825671%26versioncode%3D1186
+Accept: application/json
+
