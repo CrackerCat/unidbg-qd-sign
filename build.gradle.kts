@@ -1,8 +1,8 @@
 plugins {
-    val kotlinVersion = "2.0.0-Beta4"
+    val kotlinVersion = "1.9.23"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
-    id("io.ktor.plugin") version "3.0.0-beta-1"
+    id("io.ktor.plugin") version "2.3.9"
     application
 }
 
@@ -50,7 +50,7 @@ ktor {
     docker {
         jreVersion.set(JavaVersion.VERSION_17)
         localImageName.set("unidbg-qd-sign-image")
-        imageTag.set("0.0.1-preview")
+        imageTag.set("0.0.2-preview")
         externalRegistry.set(
             io.ktor.plugin.features.DockerImageRegistry.dockerHub(
                 appName = provider { "unidbg-qd-sign" },
