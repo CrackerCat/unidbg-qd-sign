@@ -9,12 +9,13 @@ import io.ktor.server.plugins.conditionalheaders.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.util.pipeline.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.json.Json
 import java.io.File
 
 val qdReaderJni by lazy {
-    QDReaderJni(File("libs/com.qidian.QDReader_7.9.333_1186.apk"))
+    QDReaderJni(File("libs/com.qidian.QDReader_7.9.336_1206.apk"))
 }
 
 fun main(args: Array<String>) = io.ktor.server.netty.EngineMain.main(args)
@@ -52,7 +53,8 @@ fun Application.module() {
                 respondBadRequest()
                 return@get
             }
-            val borgus = qdReaderJni.getSign(param)
+            // url 解码
+            val borgus = qdReaderJni.getSign(java.net.URLDecoder.decode(param, "UTF-8"))
             respondSuccess(borgus)
         }
     }
@@ -71,9 +73,9 @@ sealed class Response {
 
 }
 
-suspend inline fun RoutingContext.respondBadRequest() = call.respond(
+suspend inline fun PipelineContext<*, ApplicationCall>.respondBadRequest() = call.respond(
     Response.BadRequest("参数错误~~~")
 )
 
-suspend inline fun <reified T> RoutingContext.respondSuccess(data: T) =
+suspend inline fun <reified T> PipelineContext<*, ApplicationCall>.respondSuccess(data: T) =
     call.respond(Response.Success(data))
